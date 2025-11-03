@@ -94,4 +94,12 @@ app.use((req, res, next) => {
       log(`serving on port ${port}`);
     },
   );
+
+  router.post("/verify", (req, res) => {
+  const ADMIN_PASS = process.env.ADMIN_PASS; // <— baca ulang setiap request
+  if (!ADMIN_PASS) return res.status(500).json({ error: "Admin password not configured" });
+  if (req.body.password !== ADMIN_PASS) return res.status(401).json({ error: "Invalid password" });
+  res.json({ success: true });
+});
+
 })();
